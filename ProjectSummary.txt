@@ -1,0 +1,46 @@
+1. Project Overview & Purpose
+
+The purpose of this project is to evaluate the feasibility of deploying a local, offline AI chatbot to handle customer support inquiries for a virtual e-commerce store (Chic Boutique).
+
+By running the system offline on consumer-grade local hardware, businesses can:
+
+Ensure Data Privacy: Customer details, addresses, and order histories are kept secure locally rather than being sent to external cloud APIs, complying with regulations like GDPR.
+Eliminate API Costs: Running the model locally incurs zero per-token subscription costs.
+
+Compare Prompting Methods: Analyze whether Zero-Shot prompting (asking directly) or One-Shot prompting (providing an example) yields better results on a lightweight 3B parameter model.
+
+2. Implementation of Key Functionalities
+
+Query Selection & Adaptation: In chatbot.py, 20 real-world customer support queries (ranging from payment declines and return procedures to international shipping) are pre-defined.
+
+Prompt Templating: Two prompt templates are loaded from the disk:
+
+
+
+zero_shot_template.txt
+
+: Instructs the model on its persona (support agent) and poses the query directly.
+
+one_shot_template.txt
+
+: Includes the persona, a single sample Q&A (the return policy), and then poses the query.
+
+Inference Request Orchestration: The function query_ollama in chatbot.py issues an HTTP POST request to http://localhost:11434/api/generate with a JSON payload containing the prompt, the model (llama3.2:3b), and stream: False (to receive the entire answer at once).
+
+Result Generation & Logging: The main loop in 
+
+chatbot.py clean-formats the output responses (escaping newlines and markdown characters) and logs them into a comparative evaluation table in eval/results.md.
+
+3. Technology Stack & Role of Each Technology
+
+Meta Llama 3.2 (3B):
+The core brain. It is a highly optimized, small-parameter LLM that is smart enough to generate fluent, grammatically correct responses, yet lightweight enough to run smoothly on standard laptops or CPUs.
+
+Ollama:	
+The inference server. It abstracts away GPU/CPU setup, quantization details, and hosting. It runs a background server and exposes a standardized local REST API (localhost:11434) to execute the model.
+
+Python & standard libraries:	
+The orchestrator. We use requests to call the Ollama API, and os / standard file handlers to load prompt templates and save evaluation files.
+
+Markdown:
+Used for formatting the evaluation dataset (results.md) and compiling the analytical conclusions (report.md).
