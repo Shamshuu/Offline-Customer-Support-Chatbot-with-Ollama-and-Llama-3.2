@@ -1,0 +1,73 @@
+Step 1: Verify and Start Ollama
+
+Since Ollama runs as a local background service, verify it is running and has the model pulled:
+
+Verify if Ollama is running and Llama 3.2 3B is pulled: Open a PowerShell terminal and run:
+
+
+ollama list
+
+If the command succeeds, you should see llama3.2:3b in the output list.
+
+If Ollama is not running:
+
+Open the Ollama application from your Windows Start Menu (you should see the Ollama icon in your system tray).
+Alternatively, you can start the Ollama service manually in a terminal using:
+
+
+ollama serve
+
+If the model is missing from the list: Pull the model by running:
+
+
+ollama pull llama3.2:3b
+
+Step 2: Set Up the Python Virtual Environment
+Navigate to the root of the project directory and activate the pre-configured virtual environment:
+
+Navigate to the project root (if not already there):
+
+
+cd c:\GPP\Week15\Offline-Customer-Support-Chatbot-with-Ollama-and-Llama-3.2
+
+Activate the virtual environment:
+
+
+.\venv\Scripts\Activate.ps1
+
+(Note: You will see (venv) prepended to your command prompt line.)
+
+Install the required packages (if not already installed):
+
+
+pip install requests
+Step 3: Execute the Chatbot Evaluation
+Run the main script chatbot.py, which reads templates from the prompts directory, sends the 20 test customer queries to the local Ollama API, and saves the output.
+
+Run the script:
+
+python chatbot.py
+
+What the script does:
+It reads zero_shot_template.txt and one_shot_template.txt.
+
+For each of the 20 queries, it submits both Zero-Shot and One-Shot prompts to the model.
+It formats and logs all answers directly into a table in eval/results.md.
+
+Step 4: Review and Grade the Output
+Open the eval/results.md file.
+
+Review the responses and manually grade each one on a scale of 1-5 for:
+Relevance: Did the agent address the query?
+Coherence: Was the grammar and flow correct?
+Helpfulness: Did it offer actionable steps for a customer of Chic Boutique?
+Read the detailed comparison of findings in the report.md file.
+
+Step 5: (Optional) Interactive Mode
+If you want to test the model interactively and ask your own custom questions, you can run:
+
+
+ollama run llama3.2:3b
+
+Type any question (e.g. "Hi, do you sell red dresses?").
+Type /bye and press Enter to exit.
